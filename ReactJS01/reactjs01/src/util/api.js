@@ -12,9 +12,9 @@ const loginApi = (email, password) => {
     return axios.post(URL_API, data);
 };
 
-const getUserApi = () => {
+const getUserApi = (page = 1, limit = 10) => {
     const URL_API = '/v1/api/user';
-    return axios.get(URL_API);
+    return axios.get(URL_API, { params: { page, limit } });
 };
 
 const forgotPasswordApi = (email) => {

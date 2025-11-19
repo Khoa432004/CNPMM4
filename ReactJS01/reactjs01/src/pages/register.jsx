@@ -48,16 +48,20 @@ const RegisterPage = () => {
                             name="email"
                             rules={[
                                 {
+                                    required: true,
+                                    message: 'Vui lòng nhập email!',
+                                },
+                                {
                                     type: 'email',
                                     message: 'Email không hợp lệ!',
                                 },
                                 {
-                                    required: true,
-                                    message: 'Vui lòng nhập email!',
+                                    max: 100,
+                                    message: 'Email không được vượt quá 100 ký tự!',
                                 },
                             ]}
                         >
-                            <Input />
+                            <Input placeholder="Nhập email của bạn" />
                         </Form.Item>
 
                         <Form.Item
@@ -70,11 +74,19 @@ const RegisterPage = () => {
                                 },
                                 {
                                     min: 6,
-                                    message: 'Mật khẩu phải có ít nhất 6 ký tự',
+                                    message: 'Mật khẩu phải có ít nhất 6 ký tự!',
+                                },
+                                {
+                                    max: 50,
+                                    message: 'Mật khẩu không được vượt quá 50 ký tự!',
+                                },
+                                {
+                                    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+                                    message: 'Mật khẩu phải có chữ hoa, chữ thường và số!',
                                 },
                             ]}
                         >
-                            <Input.Password />
+                            <Input.Password placeholder="Nhập mật khẩu của bạn" />
                         </Form.Item>
 
                         <Form.Item
@@ -107,9 +119,21 @@ const RegisterPage = () => {
                                     required: true,
                                     message: 'Vui lòng nhập tên!',
                                 },
+                                {
+                                    min: 2,
+                                    message: 'Tên phải có ít nhất 2 ký tự!',
+                                },
+                                {
+                                    max: 50,
+                                    message: 'Tên không được vượt quá 50 ký tự!',
+                                },
+                                {
+                                    pattern: /^[a-zA-ZÀ-ỹ\s]+$/,
+                                    message: 'Tên chỉ được chứa chữ cái và khoảng trắng!',
+                                },
                             ]}
                         >
-                            <Input />
+                            <Input placeholder="Nhập tên của bạn" />
                         </Form.Item>
 
                         <Form.Item>

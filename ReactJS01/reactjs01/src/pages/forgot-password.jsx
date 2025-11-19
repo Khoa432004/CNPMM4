@@ -51,9 +51,17 @@ const ForgotPasswordPage = () => {
                                     required: true,
                                     message: 'Vui lòng nhập email của bạn!',
                                 },
+                                {
+                                    type: 'email',
+                                    message: 'Email không hợp lệ!',
+                                },
+                                {
+                                    max: 100,
+                                    message: 'Email không được vượt quá 100 ký tự!',
+                                },
                             ]}
                         >
-                            <Input />
+                            <Input placeholder="Nhập email của bạn" />
                         </Form.Item>
 
                         <Form.Item>

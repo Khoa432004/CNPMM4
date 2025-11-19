@@ -59,11 +59,15 @@ const LoginPage = () => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your email!',
+                                    message: 'Vui lòng nhập email!',
+                                },
+                                {
+                                    type: 'email',
+                                    message: 'Email không hợp lệ!',
                                 },
                             ]}
                         >
-                            <Input />
+                            <Input placeholder="Nhập email của bạn" />
                         </Form.Item>
 
                         <Form.Item
@@ -72,11 +76,15 @@ const LoginPage = () => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your password!',
+                                    message: 'Vui lòng nhập mật khẩu!',
+                                },
+                                {
+                                    min: 6,
+                                    message: 'Mật khẩu phải có ít nhất 6 ký tự!',
                                 },
                             ]}
                         >
-                            <Input.Password />
+                            <Input.Password placeholder="Nhập mật khẩu của bạn" />
                         </Form.Item>
 
                         <Form.Item>

@@ -38,6 +38,13 @@ const createUserService = async (name, email, password) => {
         };
     } catch (error) {
         console.log(error);
+        if (error.code === 11000) {
+            return {
+                EC: 1,
+                EM: `Email ${email} đã tồn tại`,
+                DT: null
+            };
+        }
         return {
             EC: -1,
             EM: "Có lỗi xảy ra khi tạo người dùng",
@@ -90,20 +97,44 @@ const loginService = async (email1, password) => {
     }
 }
 
-const getUserService = async () => {
+const getUserService = async (page = 1, limit = 10) => {
     try {
-        const result = await User.find({}).select("-password");
+        const skip = (page - 1) * limit;
+        const [result, total] = await Promise.all([
+            User.find({}).select("-password").skip(skip).limit(limit).sort({ createdAt: -1 }),
+            User.countDocuments({})
+        ]);
+
         return {
             EC: 0,
             EM: "Lấy danh sách người dùng thành công",
-            DT: result
+            DT: {
+                users: result,
+                pagination: {
+                    currentPage: page,
+                    totalPages: Math.ceil(total / limit),
+                    totalItems: total,
+                    itemsPerPage: limit,
+                    hasNextPage: page < Math.ceil(total / limit),
+                    hasPrevPage: page > 1
+                }
+            }
         };
     } catch (error) {
-        console.log(error);
         return {
             EC: -1,
             EM: "Có lỗi xảy ra khi lấy danh sách người dùng",
-            DT: []
+            DT: {
+                users: [],
+                pagination: {
+                    currentPage: page,
+                    totalPages: 0,
+                    totalItems: 0,
+                    itemsPerPage: limit,
+                    hasNextPage: false,
+                    hasPrevPage: false
+                }
+            }
         };
     }
 }

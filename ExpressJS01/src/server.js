@@ -7,12 +7,15 @@ const { getHomepage } = require('./controllers/homeController');
 const cors = require('cors');
 
 const app = express();
+const { apiLimiter } = require('./middleware/rateLimiter');
 
 const port = process.env.PORT || 8888;
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use('/v1/api/', apiLimiter);
 
 configViewEngine(app);
 
