@@ -1,5 +1,5 @@
 const express = require('express');
-const { createUser, handleLogin, getUser, getAccount, forgotPassword } = require('../controllers/userController');
+const { createUser, handleLogin, getUser, getAccount, forgotPassword, searchUser } = require('../controllers/userController');
 const auth = require('../middleware/auth');
 const delay = require('../middleware/delay');
 const { validateRegister, validateLogin, validateForgotPassword } = require('../middleware/validation');
@@ -19,6 +19,7 @@ routerAPI.post("/forgot-password", forgotPasswordLimiter, validateForgotPassword
 routerAPI.use(auth);
 
 routerAPI.get("/user", isAdmin, getUser);
+routerAPI.get("/user/search", isAdmin, searchUser);
 routerAPI.get("/account", isUserOrAdmin, delay, getAccount);
 
 module.exports = routerAPI;

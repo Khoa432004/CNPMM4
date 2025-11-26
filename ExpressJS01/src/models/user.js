@@ -30,6 +30,9 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
+// Tạo text index để hỗ trợ tìm kiếm
+userSchema.index({ name: 'text', email: 'text' });
+
 const User = mongoose.model('user', userSchema);
 
 module.exports = User;

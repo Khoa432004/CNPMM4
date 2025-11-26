@@ -1,4 +1,5 @@
-const { createUserService, loginService, getUserService, forgotPasswordService } = require('../services/userService');
+const { createUserService, loginService, getUserService, forgotPasswordService, searchUserService } = require('../services/userService');
+const { searchUserWithElasticsearch } = require('../services/elasticsearchService');
 
 const createUser = async (req, res) => {
     const { name, email, password } = req.body;
@@ -37,11 +38,59 @@ const forgotPassword = async (req, res) => {
     return res.status(status).json(data);
 }
 
+const searchUser = async (req, res) => {
+    try {
+        // Lấy các tham số từ query string
+        const {
+            keyword = '',
+            role = '',
+            createdFrom = null,
+            createdTo = null,
+            page = 1,
+            limit = 10,
+            sortBy = 'createdAt',
+            sortOrder = 'desc',
+            useElasticsearch = false // Tùy chọn sử dụng Elasticsearch
+        } = req.query;
+
+        const searchParams = {
+            keyword: keyword.trim(),
+            role: role.trim(),
+            createdFrom,
+            createdTo,
+            page: parseInt(page),
+            limit: parseInt(limit),
+            sortBy,
+            sortOrder
+        };
+
+        // Sử dụng Elasticsearch nếu được yêu cầu và có cấu hình
+        let data;
+        if (useElasticsearch === 'true' || useElasticsearch === true) {
+            data = await searchUserWithElasticsearch(searchParams);
+        } else {
+            // Mặc định sử dụng MongoDB Fuzzy Search
+            data = await searchUserService(searchParams);
+        }
+
+        const status = data?.EC === 0 ? 200 : 400;
+        return res.status(status).json(data);
+    } catch (error) {
+        console.log('Search controller error:', error);
+        return res.status(500).json({
+            EC: -1,
+            EM: "Có lỗi xảy ra khi xử lý tìm kiếm",
+            DT: null
+        });
+    }
+}
+
 module.exports = {
     createUser,
     handleLogin,
     getUser,
     getAccount,
-    forgotPassword
+    forgotPassword,
+    searchUser
 };
 

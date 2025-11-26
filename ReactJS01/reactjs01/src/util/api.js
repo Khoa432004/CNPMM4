@@ -17,6 +17,11 @@ const getUserApi = (page = 1, limit = 10) => {
     return axios.get(URL_API, { params: { page, limit } });
 };
 
+const searchUserApi = (searchParams = {}) => {
+    const URL_API = '/v1/api/user/search';
+    return axios.get(URL_API, { params: searchParams });
+};
+
 const forgotPasswordApi = (email) => {
     const URL_API = '/v1/api/forgot-password';
     return axios.post(URL_API, { email });
@@ -26,6 +31,7 @@ export {
     createUserApi,
     loginApi,
     getUserApi,
+    searchUserApi,
     forgotPasswordApi
 };
 
